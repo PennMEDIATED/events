@@ -1,0 +1,532 @@
+/* =============================================================================
+   Atlassian Spacing Tokens  —  8px base unit
+   https://atlassian.design/foundations/spacing
+   Shared conventions with the Penn MEDIATED /about, /home, /grants, and
+   /team-leadership repos. Pull values from here rather than introducing new
+   ones — see README.md "Style guide."
+   ============================================================================= */
+:root {
+  --space-025:   2px;
+  --space-050:   4px;
+  --space-075:   6px;
+  --space-100:   8px;
+  --space-150:  12px;
+  --space-200:  16px;
+  --space-250:  20px;
+  --space-300:  24px;
+  --space-400:  32px;
+  --space-500:  40px;
+  --space-600:  48px;
+  --space-800:  64px;
+  --space-1000: 80px;
+
+  /* ── Figma colour tokens ── */
+  --c-bg:         #ffffff;
+  --c-dark:       #0d0d0c;          /* rgb(13,13,12)   */
+  --c-light-bg:   #f8f7f4;          /* rgb(248,247,244)*/
+  --c-accent:     #5533ee;          /* rgb(85,51,238)  */
+  --c-red:        #f03d1f;          /* rgb(240,61,31)  */
+  --c-gray:       #888680;          /* rgb(136,134,128)*/
+  --c-gray-dark:  #54534f;          /* rgb(84,83,79) — opaque body copy, ~8:1 on white */
+  --c-muted:      #c8c6c0;          /* rgb(200,198,192) — date/meta text */
+  --c-white:      #ffffff;
+  --c-pale-orange: #fce4dc;         /* --c-red tinted ~12% onto white — callout boxes */
+
+  /* Brand gradient — used on every purple-to-red surface, matches /about, /home, /grants */
+  --c-gradient: linear-gradient(150deg, #5533ee 0%, #df3611 81%);
+
+  /* ── Figma typography tokens ── */
+  --f-serif: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  --f-sans:  'DM Sans', system-ui, -apple-system, sans-serif;
+  --f-mono:  'Courier New', Courier, monospace;
+
+  /* ── Page layout ── */
+  --max-w: 1440px;
+  --pad-x: var(--space-1000);   /* 80px side padding — page-level rhythm */
+}
+
+/* Side padding scales down on smaller screens — same breakpoints as
+   /home, /grants, and /team-leadership. */
+@media (max-width: 900px) {
+  :root { --pad-x: var(--space-400); }  /* 32px */
+}
+@media (max-width: 480px) {
+  :root { --pad-x: var(--space-250); }  /* 20px */
+}
+
+/* =============================================================================
+   External Link Arrow Badge — copied verbatim from about/home/grants/
+   team-leadership. Black circle + white arrow signaling "opens an external
+   site," on every card/link that leaves the site. Sliding purple-to-orange
+   gradient on hover. Host element needs position: relative. If you touch
+   one repo's copy, touch the others'.
+   ============================================================================= */
+.card-arrow {
+  position: absolute;
+  top: var(--space-100);
+  right: var(--space-100);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--c-dark);
+  color: var(--c-white);
+  font-size: 10px;
+  line-height: 1;
+  transition: transform 0.2s ease;
+  pointer-events: none;
+}
+@keyframes card-arrow-slide {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+a:hover .card-arrow {
+  transform: scale(1.15) translate(2px, -2px);
+  background: linear-gradient(100deg, var(--c-accent), var(--c-red), var(--c-accent));
+  background-size: 220% 100%;
+  animation: card-arrow-slide 1.2s linear infinite;
+}
+
+/* =============================================================================
+   Reset
+   ============================================================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; overflow-anchor: none; }
+body {
+  font-family: var(--f-sans);
+  color: var(--c-dark);
+  background: var(--c-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  overflow-anchor: none;
+}
+ul, ol { list-style: none; }
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; height: auto; display: block; }
+a:focus-visible {
+  outline: 2px solid var(--c-red);
+  outline-offset: 2px;
+}
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0;
+  margin: -1px; overflow: hidden; clip: rect(0,0,0,0);
+  white-space: nowrap; border-width: 0;
+}
+
+/* =============================================================================
+   Shared inner container — same rule/selector convention as the other repos.
+   ============================================================================= */
+.events-hero__inner,
+.seminar__inner,
+.past-events__inner {
+  width: 100%;
+  max-width: var(--max-w);
+  margin-inline: auto;
+  padding-inline: var(--pad-x);
+}
+
+/* =============================================================================
+   Eyebrow label — copied verbatim from about/team-leadership.
+   ============================================================================= */
+.eyebrow {
+  font-family: var(--f-sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-red);
+  margin-bottom: var(--space-150);
+}
+
+/* =============================================================================
+   Scroll-triggered reveal — same progressive-enhancement pattern as the
+   other repos. One-shot only (no .reveal--toggle): this page reads as a
+   long, bottom-heavy content page like /team-leadership, where the about
+   repo's README documents a "spasming" bug when a toggle-based reveal
+   section sits at the very bottom of the page — one-shot sidesteps that.
+   ============================================================================= */
+.js-reveal-ready .reveal {
+  opacity: 0;
+  translate: 0 24px;
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), translate 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.js-reveal-ready .reveal.is-visible {
+  opacity: 1;
+  translate: none;
+}
+
+/* Card children get their own staggered reveal, cued off their parent
+   section's .is-visible class — same technique as the other repos'
+   school-block / person-card / stats__item stagger. */
+.js-reveal-ready .event-card,
+.js-reveal-ready .event-card__photo {
+  opacity: 0;
+  translate: 0 20px;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), translate 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.is-visible .event-card,
+.reveal.is-visible .event-card__photo {
+  opacity: 1;
+  translate: none;
+}
+.event-card:nth-child(1) { transition-delay: 0.05s; }
+.event-card:nth-child(2) { transition-delay: 0.13s; }
+
+/* =============================================================================
+   HERO  ("Events")
+   Same shape as /team-leadership's team-hero and /about's Mission Statement
+   block: eyebrow, serif accent-purple H1, sans lede paragraph filling the
+   full padded width.
+   ============================================================================= */
+.events-hero {
+  padding-top: 20px;
+  padding-bottom: var(--space-800);
+}
+
+.events-hero__title {
+  font-family: var(--f-serif);
+  font-size: 48px;
+  font-weight: 600;
+  line-height: 50.4px;
+  letter-spacing: 0;
+  color: var(--c-accent);
+  margin-bottom: var(--space-250);
+}
+
+.events-hero__lede {
+  font-family: var(--f-sans);
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 25.2px;
+  color: var(--c-dark);
+  max-width: 760px;
+}
+
+/* =============================================================================
+   SEMINAR SCHEDULE
+   Full-bleed brand-gradient backdrop — same treatment as /about's Orbital
+   section and /team-leadership's Core Team block — so this, the page's
+   primary content block, reads as the lead chapter. (Previously a quieter
+   light-gray band with a thin gradient top border; the border is gone now
+   that the gradient fills the whole section, matching how /orbital,
+   /partners, /related-centers, and /team-section--gradient never carry
+   one either.)
+   ============================================================================= */
+.seminar {
+  background: var(--c-gradient);
+  padding-block: var(--space-1000);
+}
+
+/* Copy column on the left, PDF card on the right — a centered pair
+   (not pinned to the container's edges) so the two unevenly-sized
+   columns read as one balanced composition instead of stretching the
+   copy block to fill whatever space is left over. Stacks to one
+   column under 900px. */
+.seminar__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-800);
+}
+
+@media (max-width: 900px) {
+  .seminar__inner { flex-direction: column; }
+}
+
+/* Nudged up from true vertical-center against the taller PDF card —
+   reads better anchored a bit toward the top than dead-center. */
+.seminar__copy {
+  flex: 1 1 420px;
+  max-width: 560px;
+  min-width: 0;
+  margin-top: calc(-1 * var(--space-500));
+}
+
+/* Matches /team-leadership's .team-section__title exactly — the documented
+   "repeated section heading on a light/white surface" pattern. */
+.seminar__title {
+  font-family: var(--f-sans);
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--c-white);
+  margin-bottom: var(--space-600);
+}
+
+.seminar__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+/* Same 20px/300 body-copy scale as /about's .mission__body p / /grants'
+   .intro__body p, recolored white for the gradient backdrop — same
+   treatment as /about's .orbital__lead. */
+.seminar__body p {
+  font-family: var(--f-sans);
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 25.2px;
+  letter-spacing: 0;
+  color: var(--c-white);
+  max-width: 900px;
+}
+
+.seminar__body a {
+  color: var(--c-white);
+  font-weight: 500;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  transition: opacity 0.15s;
+}
+.seminar__body a:hover { opacity: 0.7; }
+
+/* ── Featured schedule PDF ──
+   The real flyer (assets/fall-2026-seminar-schedule.pdf, preview rendered
+   at assets/fall-2026-seminar-schedule-preview.jpg) replaces the earlier
+   hand-transcribed session list — one source of truth instead of two. The
+   preview tile reuses the established "white card floating on a gradient,
+   card-arrow badge, hover lift" language from /about's school-block /
+   center-block / partner-card tiles, just unconstrained by their 4:3
+   aspect-ratio since this is a full document page, not a logo. */
+.seminar__pdf {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-300);
+  flex: 0 0 auto;
+  width: min(34vw, 400px);
+}
+
+@media (max-width: 900px) {
+  .seminar__pdf { width: 100%; max-width: 440px; margin-inline: auto; }
+}
+
+.seminar__pdf-link {
+  position: relative;
+  display: block;
+  width: 100%;
+  background: var(--c-white);
+  padding: var(--space-100);
+  box-shadow: 0 20px 48px rgba(13, 13, 12, 0.28);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.seminar__pdf-link:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 28px 56px rgba(13, 13, 12, 0.34);
+}
+
+.seminar__pdf-img { width: 100%; height: auto; display: block; }
+
+.seminar__pdf-cta {
+  font-family: var(--f-sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--c-white);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  padding-bottom: 2px;
+  transition: opacity 0.15s;
+}
+.seminar__pdf-cta:hover { opacity: 0.75; }
+
+/* =============================================================================
+   PAST EVENTS  (two-column: Democratic Repercussions panel / Seminar kickoff)
+   ============================================================================= */
+.past-events {
+  background: var(--c-bg);
+  padding-block: var(--space-1000);
+}
+
+.past-events__title {
+  font-family: var(--f-sans);
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--c-red);
+  margin-bottom: var(--space-600);
+}
+
+.past-events__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-600);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .past-events__grid { grid-template-columns: 1fr; }
+}
+
+.event-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.event-card__date {
+  font-family: var(--f-sans);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.44px;
+  text-transform: uppercase;
+  color: var(--c-red);
+  background: var(--c-pale-orange);
+  display: inline-flex;
+  align-self: flex-start;
+  padding: var(--space-075) var(--space-150);
+}
+
+.event-card__title {
+  font-family: var(--f-sans);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: var(--c-dark);
+}
+
+/* Linked photo tile — 16:9 frame showing the real event photo
+   (assets/Media-Fragmentation.jpg), same "image tile + card-arrow badge +
+   hover lift" language as /about's school-block/center-block/partner-card
+   tiles. (Previously an inline YouTube iframe embed; reverted back to a
+   linked tile per the real asset now available.) */
+.event-card__media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--c-dark);
+  overflow: hidden;
+  display: block;
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+.event-card__media:hover {
+  box-shadow: 0 12px 24px rgba(13, 13, 12, 0.16);
+  transform: translateY(-4px);
+}
+
+.event-card__media-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.event-card__featuring {
+  font-family: var(--f-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-gray);
+}
+.event-card__featuring span {
+  display: block;
+  margin-top: var(--space-100);
+  font-family: var(--f-serif);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--c-dark);
+  line-height: 1.5;
+}
+
+.event-card__desc {
+  font-family: var(--f-sans);
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--c-dark);
+}
+
+/* Bordered containers rather than free-floating underlined text — same
+   "white tile, hairline border, hover lift" language as /about's
+   school-block/center-block/partner-card tiles and .event-card__media
+   above, just sized as an inline pill instead of a full image tile. */
+.event-card__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-150);
+  margin-top: var(--space-050);
+}
+
+.event-card__links a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-150) var(--space-500) var(--space-150) var(--space-200);
+  background: var(--c-white);
+  border: 1px solid var(--c-red);
+  font-family: var(--f-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--c-dark);
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+.event-card__links a:hover {
+  box-shadow: 0 12px 24px rgba(13, 13, 12, 0.16);
+  transform: translateY(-4px);
+}
+.event-card__links a .card-arrow {
+  top: 50%;
+  right: var(--space-200);
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  font-size: 8px;
+}
+.event-card__links a:hover .card-arrow { transform: translateY(-50%) scale(1.15) translate(2px, -2px); }
+
+/* Photo-pair grid — the kickoff card's two captioned photos. */
+.event-card__photo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-200);
+}
+
+@media (max-width: 480px) {
+  .event-card__photo-grid { grid-template-columns: 1fr; }
+}
+
+.event-card__photo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+}
+
+/* Placeholder fill (image pending — see README "Updating content"); once a
+   real <img> is dropped in here, this background simply sits behind it. */
+.event-card__photo-frame {
+  aspect-ratio: 4 / 3;
+  background: var(--c-light-bg);
+  border: 1px solid rgba(13, 13, 12, 0.08);
+}
+.event-card__photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.event-card__caption {
+  font-family: var(--f-sans);
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--c-gray);
+}
+.event-card__caption a {
+  color: var(--c-red);
+  font-weight: 500;
+}
+.event-card__caption a:hover { opacity: 0.7; }
+
+@media (max-width: 640px) {
+  .events-hero { padding-bottom: var(--space-600); }
+  .seminar { padding-block: var(--space-800); }
+  .past-events { padding-block: var(--space-800); }
+}

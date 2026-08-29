@@ -468,19 +468,17 @@ a:focus-visible {
 }
 .event-card__links a:hover .card-arrow { transform: translateY(-50%) scale(1.15) translate(2px, -2px); }
 
-/* Photo-pair grid — the kickoff card's two captioned photos. Capped to
-   the same 560px measure as .event-card__desc so its right edge lines
-   up with the body copy above it instead of stretching to the full
-   grid-column width. */
+/* Photo-pair — the kickoff card's two captioned photos, stacked in a
+   single column rather than side by side: at half of the 560px measure
+   each photo read too small and left an awkward gap on the right where
+   the pair (560px) fell short of the image column's full width (616px).
+   Stacked, each photo runs the full 560px, matching .event-card__desc's
+   measure with no leftover gap. */
 .event-card__photo-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-200);
+  grid-template-columns: 1fr;
+  gap: var(--space-300);
   max-width: 560px;
-}
-
-@media (max-width: 480px) {
-  .event-card__photo-grid { grid-template-columns: 1fr; }
 }
 
 .event-card__photo {

@@ -483,11 +483,15 @@ a:focus-visible {
 }
 .event-card__links a:hover .card-arrow { transform: translateY(-50%) scale(1.15) translate(2px, -2px); }
 
-/* Photo-pair grid — the kickoff card's two captioned photos. */
+/* Photo-pair grid — the kickoff card's two captioned photos. Capped to
+   the same 560px measure as .event-card__desc so its right edge lines
+   up with the body copy above it instead of stretching to the full
+   grid-column width. */
 .event-card__photo-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--space-200);
+  max-width: 560px;
 }
 
 @media (max-width: 480px) {

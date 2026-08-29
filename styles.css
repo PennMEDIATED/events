@@ -442,6 +442,7 @@ a:focus-visible {
   font-weight: 300;
   line-height: 1.7;
   color: var(--c-dark);
+  max-width: 560px;
 }
 
 /* Bordered containers rather than free-floating underlined text — same

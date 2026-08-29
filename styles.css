@@ -131,19 +131,6 @@ a:focus-visible {
 }
 
 /* =============================================================================
-   Eyebrow label — copied verbatim from about/team-leadership.
-   ============================================================================= */
-.eyebrow {
-  font-family: var(--f-sans);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--c-red);
-  margin-bottom: var(--space-150);
-}
-
-/* =============================================================================
    Scroll-triggered reveal — same progressive-enhancement pattern as the
    other repos. One-shot only (no .reveal--toggle): this page reads as a
    long, bottom-heavy content page like /team-leadership, where the about
@@ -179,9 +166,8 @@ a:focus-visible {
 
 /* =============================================================================
    HERO  ("Events")
-   Same shape as /team-leadership's team-hero and /about's Mission Statement
-   block: eyebrow, serif accent-purple H1, sans lede paragraph filling the
-   full padded width.
+   Serif accent-purple H1 and a sans lede paragraph filling the full
+   padded width.
    ============================================================================= */
 .events-hero {
   padding-top: 20px;
@@ -204,7 +190,6 @@ a:focus-visible {
   font-weight: 300;
   line-height: 25.2px;
   color: var(--c-dark);
-  max-width: 760px;
 }
 
 /* =============================================================================

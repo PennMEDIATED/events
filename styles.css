@@ -224,9 +224,16 @@ a:focus-visible {
 }
 
 /* Capped at the same 560px measure as .event-card__desc, for the same
-   reading-width consistency. */
+   reading-width consistency — only while it shares a two-column row with
+   .seminar__pdf. Once .seminar__inner stacks to one column under 900px,
+   the cap is lifted so the copy fills the full single-column width
+   instead of leaving a block of empty space on the right (2026-08-31). */
 .seminar__copy {
   max-width: 560px;
+}
+
+@media (max-width: 900px) {
+  .seminar__copy { max-width: none; }
 }
 
 /* Matches /team-leadership's .team-section__title exactly — the documented
@@ -403,6 +410,14 @@ a:focus-visible {
   transform: translateY(-4px);
 }
 
+/* .past-events__grid stacks to one column at this width, so the 560px
+   reading-measure cap above (calibrated for the narrower two-column
+   layout) is lifted — otherwise the tile leaves a block of empty space
+   on the right of its now much wider single column (2026-08-31). */
+@media (max-width: 900px) {
+  .event-card__media { max-width: none; }
+}
+
 .event-card__media-img {
   width: 100%;
   height: 100%;
@@ -420,7 +435,7 @@ a:focus-visible {
 .event-card__featuring span {
   display: block;
   margin-top: var(--space-100);
-  font-family: var(--f-serif);
+  font-family: var(--f-sans);
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0;
@@ -436,6 +451,12 @@ a:focus-visible {
   line-height: 1.7;
   color: var(--c-dark);
   max-width: 560px;
+}
+
+/* Same reasoning as .event-card__media above: lift the cap once the grid
+   stacks to one column (2026-08-31). */
+@media (max-width: 900px) {
+  .event-card__desc { max-width: none; }
 }
 
 /* Plain text link, not a bordered box — same "dark text, subtle
@@ -482,6 +503,12 @@ a:focus-visible {
   max-width: 560px;
 }
 
+/* Same reasoning as .event-card__media above: lift the cap once the grid
+   stacks to one column (2026-08-31). */
+@media (max-width: 900px) {
+  .event-card__photo-grid { max-width: none; }
+}
+
 @media (max-width: 480px) {
   .event-card__photo-grid { gap: var(--space-100); }
 }
@@ -512,11 +539,18 @@ a:focus-visible {
   line-height: 1.6;
   color: var(--c-gray);
 }
+.event-card__desc a,
 .event-card__caption a {
-  color: var(--c-red);
+  color: var(--c-dark);
   font-weight: 500;
+  border-bottom: 1px solid rgba(13, 13, 12, 0.35);
+  transition: color 0.15s, border-color 0.15s;
 }
-.event-card__caption a:hover { opacity: 0.7; }
+.event-card__desc a:hover,
+.event-card__caption a:hover {
+  color: var(--c-red);
+  border-color: var(--c-red);
+}
 
 @media (max-width: 640px) {
   .events-hero { padding-bottom: var(--space-600); }

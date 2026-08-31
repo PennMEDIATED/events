@@ -131,19 +131,6 @@ a:focus-visible {
 }
 
 /* =============================================================================
-   Eyebrow label — copied verbatim from about/team-leadership.
-   ============================================================================= */
-.eyebrow {
-  font-family: var(--f-sans);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--c-red);
-  margin-bottom: var(--space-150);
-}
-
-/* =============================================================================
    Scroll-triggered reveal — same progressive-enhancement pattern as the
    other repos. One-shot only (no .reveal--toggle): this page reads as a
    long, bottom-heavy content page like /team-leadership, where the about
@@ -179,9 +166,8 @@ a:focus-visible {
 
 /* =============================================================================
    HERO  ("Events")
-   Same shape as /team-leadership's team-hero and /about's Mission Statement
-   block: eyebrow, serif accent-purple H1, sans lede paragraph filling the
-   full padded width.
+   Serif accent-purple H1 and a sans lede paragraph filling the full
+   padded width.
    ============================================================================= */
 .events-hero {
   padding-top: 20px;
@@ -204,7 +190,6 @@ a:focus-visible {
   font-weight: 300;
   line-height: 25.2px;
   color: var(--c-dark);
-  max-width: 760px;
 }
 
 /* =============================================================================
@@ -442,6 +427,7 @@ a:focus-visible {
   font-weight: 300;
   line-height: 1.7;
   color: var(--c-dark);
+  max-width: 560px;
 }
 
 /* Bordered containers rather than free-floating underlined text — same
@@ -482,17 +468,20 @@ a:focus-visible {
 }
 .event-card__links a:hover .card-arrow { transform: translateY(-50%) scale(1.15) translate(2px, -2px); }
 
-/* Photo-pair grid — the kickoff card's two captioned photos. */
-/* Deliberately stays a 2-up grid at every width, even alongside the
-   Media Fragmentation card's single wide image — letting it collapse to
-   one column on narrow screens dropped the second photo underneath the
-   first and blew each one up disproportionately, throwing off the
-   side-by-side balance with the other .event-card. A multi-asset card
-   keeps its formation as the page narrows instead. */
+/* Photo-pair grid — the kickoff card's two captioned photos. Capped to
+   the same 560px measure as .event-card__desc so its right edge lines
+   up with the body copy above it (the alignment concern behind the
+   Aug 30 "stack them" change), but deliberately kept as a 2-up grid at
+   every width rather than stacked — collapsing to one column on narrow
+   screens dropped the second photo underneath the first and blew each
+   one up disproportionately, throwing off the side-by-side balance
+   with the Media Fragmentation card next to it. At 560px each photo is
+   ~272px, which reads fine paired with its caption. */
 .event-card__photo-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--space-150);
+  max-width: 560px;
 }
 
 @media (max-width: 480px) {

@@ -276,17 +276,17 @@ a:focus-visible {
    card-arrow badge, hover lift" language from /about's school-block /
    center-block / partner-card tiles, just unconstrained by their 4:3
    aspect-ratio since this is a full document page, not a logo. */
-/* Fills its grid column edge-to-edge, same as .event-card__media does
-   in its own Past Events column, rather than a narrower centered card. */
+/* Capped narrower than its grid column (rather than filling it
+   edge-to-edge) and left-aligned at every width, matching how the copy
+   column and Past Events content align — no centering breakpoint, so it
+   doesn't jump out of alignment with the rest of the page as it narrows. */
 .seminar__pdf {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-300);
-}
-
-@media (max-width: 900px) {
-  .seminar__pdf { width: 100%; max-width: 440px; margin-inline: auto; }
+  width: 100%;
+  max-width: 360px;
 }
 
 .seminar__pdf-link {
@@ -345,10 +345,20 @@ a:focus-visible {
   .past-events__grid { grid-template-columns: 1fr; }
 }
 
+/* Bordered white box with a soft shadow — same "card floating on the
+   page" treatment as /home's .about-center__card. */
 .event-card {
   display: flex;
   flex-direction: column;
   gap: var(--space-200);
+  padding: var(--space-800);
+  background: var(--c-white);
+  border: 1px solid rgba(13, 13, 12, 0.08);
+  box-shadow: 0 20px 60px rgba(13, 13, 12, 0.08);
+}
+
+@media (max-width: 900px) {
+  .event-card { padding: var(--space-400); }
 }
 
 .event-card__date {
@@ -384,6 +394,8 @@ a:focus-visible {
   background: var(--c-dark);
   overflow: hidden;
   display: block;
+  width: 100%;
+  max-width: 560px;
   transition: box-shadow 0.15s, transform 0.15s;
 }
 .event-card__media:hover {
@@ -426,43 +438,33 @@ a:focus-visible {
   max-width: 560px;
 }
 
-/* Bordered containers rather than free-floating underlined text — same
-   "white tile, hairline border, hover lift" language as /about's
-   school-block/center-block/partner-card tiles and .event-card__media
-   above, just sized as an inline pill instead of a full image tile. */
+/* Plain text link, not a bordered box — same "dark text, subtle
+   underline, turns red only on hover" pattern as /home's
+   .about-center__link, so the red/orange only shows up as a hover
+   state rather than a permanent border. */
 .event-card__links {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-150);
+  gap: var(--space-400);
   margin-top: var(--space-050);
 }
 
 .event-card__links a {
-  position: relative;
   display: inline-flex;
   align-items: center;
-  padding: var(--space-150) var(--space-500) var(--space-150) var(--space-200);
-  background: var(--c-white);
-  border: 1px solid var(--c-red);
+  gap: var(--space-100);
+  padding-bottom: var(--space-050);
   font-family: var(--f-sans);
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--c-dark);
-  transition: box-shadow 0.15s, transform 0.15s;
+  border-bottom: 1px solid rgba(13, 13, 12, 0.35);
+  transition: color 0.15s, border-color 0.15s;
 }
 .event-card__links a:hover {
-  box-shadow: 0 12px 24px rgba(13, 13, 12, 0.16);
-  transform: translateY(-4px);
+  color: var(--c-red);
+  border-color: var(--c-red);
 }
-.event-card__links a .card-arrow {
-  top: 50%;
-  right: var(--space-200);
-  transform: translateY(-50%);
-  width: 20px;
-  height: 20px;
-  font-size: 8px;
-}
-.event-card__links a:hover .card-arrow { transform: translateY(-50%) scale(1.15) translate(2px, -2px); }
 
 /* Photo-pair grid — the kickoff card's two captioned photos. Capped to
    the same 560px measure as .event-card__desc so its right edge lines

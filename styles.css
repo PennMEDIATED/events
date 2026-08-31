@@ -207,30 +207,26 @@ a:focus-visible {
   padding-block: var(--space-1000);
 }
 
-/* Copy column on the left, PDF card on the right — a centered pair
-   (not pinned to the container's edges) so the two unevenly-sized
-   columns read as one balanced composition instead of stretching the
-   copy block to fill whatever space is left over. Stacks to one
-   column under 900px. */
+/* Same two-column grid as .past-events__grid below it (repeat(2, 1fr),
+   space-600 gap, top-aligned) — matching that section's spacing and
+   column width instead of a bespoke centered composition, so the two
+   two-column sections on this page read as one consistent layout
+   system. Stacks to one column under 900px. */
 .seminar__inner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-800);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-600);
+  align-items: start;
 }
 
 @media (max-width: 900px) {
-  .seminar__inner { flex-direction: column; }
+  .seminar__inner { grid-template-columns: 1fr; }
 }
 
-/* Nudged up from true vertical-center against the taller PDF card —
-   reads better anchored a bit toward the top than dead-center. */
+/* Capped at the same 560px measure as .event-card__desc, for the same
+   reading-width consistency. */
 .seminar__copy {
-  flex: 1 1 420px;
   max-width: 560px;
-  min-width: 0;
-  margin-top: calc(-1 * var(--space-500));
 }
 
 /* Matches /team-leadership's .team-section__title exactly — the documented
@@ -280,13 +276,13 @@ a:focus-visible {
    card-arrow badge, hover lift" language from /about's school-block /
    center-block / partner-card tiles, just unconstrained by their 4:3
    aspect-ratio since this is a full document page, not a logo. */
+/* Fills its grid column edge-to-edge, same as .event-card__media does
+   in its own Past Events column, rather than a narrower centered card. */
 .seminar__pdf {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-300);
-  flex: 0 0 auto;
-  width: min(34vw, 400px);
 }
 
 @media (max-width: 900px) {

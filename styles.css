@@ -112,6 +112,12 @@ a:focus-visible {
   outline: 2px solid var(--c-red);
   outline-offset: 2px;
 }
+
+/* Keep the contact email on one line rather than breaking mid-address
+   (appears in .seminar__body and .event-card__desc) (2026-08-31). */
+a[href="mailto:contact-us@infodem.upenn.edu"] {
+  white-space: nowrap;
+}
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0;
   margin: -1px; overflow: hidden; clip: rect(0,0,0,0);
@@ -345,7 +351,7 @@ a:focus-visible {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--space-600);
-  align-items: start;
+  align-items: stretch;
 }
 
 @media (max-width: 900px) {

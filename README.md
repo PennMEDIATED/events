@@ -1,21 +1,10 @@
 # Penn MEDIATED — Events
 
-The events page for the [Center on Media, Technology and Democracy](https://infodem.upenn.edu) — the Fall 2026 seminar schedule and past public events. Static HTML/CSS, no build step. Deploys directly to https://infodem.upenn.edu/events/ (or the new site's equivalent URL) — see "Deployment" below.
+The events page for the [Center on Media, Technology and Democracy](https://infodem.upenn.edu) — the Fall 2026 seminar schedule and past public events. Static HTML/CSS, no build step.
 
 - `index.html` — page markup
 - `styles.css` — all styling (design tokens live at the top in `:root`)
 - `assets/` — the Fall 2026 schedule PDF and its rendered preview image, plus event photos (the Media Fragmentation panel tile, and the two Information & Democracy kickoff photos)
-
-## Deployment
-
-This repo deploys straight to the live site — no GitHub Pages hosting step, no WordPress iframe embed. Same mechanism as `about`, `grants`, and `team-leadership`:
-
-- A clone of this repo lives on the department's web server (eniac) at the path WordPress resolves `/events/` to. The server's `.htaccess` defers to real files/directories on disk before handing a request to WordPress, so this repo's own files are what actually serve the live URL — there's no WordPress Page involved at that URL anymore.
-- Deploy is triggered by a GitHub webhook (push to `main` → WordPress REST endpoint → `git pull`) once that infrastructure is live — see the top-level `Website` folder's migration notes if you're setting this up before that's wired up.
-- To undo a live mistake: `git revert` the bad commit and push it, same as any other change. **Don't** `git reset --hard` + force-push — the deploy mechanism expects a normal fast-forward `git pull`.
-- The server only ever pulls; it never pushes back to GitHub. Edits should always originate here (in GitHub), not by hand-editing files directly on the server.
-
-Full setup process (SSH access, deploy keys) is documented in `eniac-github-ssh-setup.md` at the top level of the `Website` folder.
 
 This repo's design system is copied from [`about`](https://github.com/PennMEDIATED/about) — see that repo's README for the canonical spacing/color/type tokens and component conventions. Don't redefine a token or component pattern here that already exists there; pull the value from `about` instead so the pages don't drift apart. `--pad-x` here is responsive (32px under 900px, 20px under 480px), same as `home`/`grants`/`team-leadership`.
 

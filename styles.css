@@ -177,7 +177,7 @@ a[href="mailto:contact-us@infodem.upenn.edu"] {
    ============================================================================= */
 .events-hero {
   padding-top: 20px;
-  padding-bottom: var(--space-800);
+  padding-bottom: var(--space-300);
 }
 
 .events-hero__title {
@@ -211,6 +211,11 @@ a[href="mailto:contact-us@infodem.upenn.edu"] {
 .seminar {
   background: var(--c-gradient);
   padding-block: var(--space-1000);
+  /* This is the section directly under the hero lede — top override
+     tightens that specific gap to the org-wide 24px standard (split
+     across .events-hero's bottom padding); the bottom stays the
+     standard 80px break before .past-events. */
+  padding-top: 0;
 }
 
 /* Same two-column grid as .past-events__grid below it (repeat(2, 1fr),

@@ -6,7 +6,7 @@ The events page for the [Center on Media, Technology and Democracy](https://info
 - `styles.css` — all styling (design tokens live at the top in `:root`)
 - `assets/` — the Fall 2026 schedule PDF and its rendered preview image, plus event photos (the Media Fragmentation panel tile, and the two Information & Democracy kickoff photos)
 
-This repo's design system is copied from [`about`](https://github.com/PennMEDIATED/about) — see that repo's README for the canonical spacing/color/type tokens and component conventions. Don't redefine a token or component pattern here that already exists there; pull the value from `about` instead so the pages don't drift apart. `--pad-x` here is responsive (32px under 900px, 20px under 480px), same as `home`/`grants`/`team-leadership`.
+This repo's design system is copied from [`about`](https://github.com/PennMEDIATED/about) — see that repo's README for the canonical spacing/color/type tokens and component conventions. Don't redefine a token or component pattern here that already exists there; pull the value from `about` instead so the pages don't drift apart. `--pad-x` here is responsive (32px under 900px, 20px under 480px), same as `home`/`grants`/`team-leadership`. Grid and flex children shrink below their content: grid tracks are `minmax(0, 1fr)` rather than `1fr`, and flex items that hold text carry `min-width: 0`. Without those, a track or item is pinned to its widest child and pushes the page wider than the viewport on small screens.
 
 This page does **not** end in the shared Newsletter + Supporters closing block that `about`, `home`, and `grants` use — it was built, then deliberately removed here along with the "Amy Gutmann Hall" venue blurb, so the page now ends with Past Events. If a closing block is wanted back later, copy it fresh from one of those three repos rather than trying to restore it from this repo's git history, since the design system may have moved on by then.
 
@@ -55,6 +55,8 @@ The top five are `clamp()` values that interpolate across the viewport, so table
 **Line heights are tokens too** — `--lh-display` 1.05, `--lh-heading` 1.15, `--lh-lede` 1.26, `--lh-title` 1.3, `--lh-body` 1.55. Never set a line-height in px; it breaks the fluid sizes.
 
 **Heading gaps.** Section title to first content is `var(--space-300)` (24px); page or hero title to content is `var(--space-250)` (20px).
+
+**Section rhythm.** A full-width colored section carries `var(--space-1000)` (80px) top and bottom padding, so its heading never sits flush against the band's edge. The page hero's bottom padding is `var(--space-600)` (48px) — shorter than 80px because the section below supplies its own.
 
 ## Components
 

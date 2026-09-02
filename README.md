@@ -28,6 +28,34 @@ rm page-1.png
 
 To add a new past event: copy a `.event-card` block inside `.past-events__grid` (a two-up grid; a third card wraps to its own row under the 900px breakpoint, so nothing needs to change there for a growing list — though a fast-growing archive may eventually want its own "past events" sub-page rather than living entirely on this one).
 
+## Typography
+
+Sitewide convention. The `--fs-*`/`--lh-*` block at the top of `styles.css` is canonical and identical in every page repo.
+
+**Two families, no third.** `--f-serif` (EB Garamond) for page and section titles and pull-quote copy; `--f-sans` (DM Sans) for everything else. There is no monospace face — uppercase micro-labels are DM Sans 700 uppercase with `letter-spacing: 0.08em`.
+
+**Sizes come from tokens, never raw px.**
+
+| Token | Mobile (=<480px) | Desktop (>=1440px) | Used for |
+| --- | --- | --- | --- |
+| `--fs-display` | 36px | 76px | full-bleed hero |
+| `--fs-h1` | 36px | 56px | page title |
+| `--fs-h2` | 26px | 40px | section titles |
+| `--fs-h3` | 20px | 24px | card and third-level titles |
+| `--fs-lede` | 18px | 20px | intro paragraphs |
+| `--fs-body` | 16px | 16px | body copy |
+| `--fs-small` | 14px | 14px | captions, meta, form controls |
+| `--fs-small-serif` | 15px | 15px | EB Garamond at small sizes |
+| `--fs-micro` | 12px | 12px | uppercase labels, tags, counts |
+
+The top five are `clamp()` values that interpolate across the viewport, so tablet widths need no separate `@media` override. Only add a breakpoint font-size when a specific layout actually demands it.
+
+**12px is the floor.** Nothing ships smaller. EB Garamond and uppercase-with-letter-spacing both read smaller than their nominal size, which is what `--fs-small-serif` and the 12px floor exist to absorb.
+
+**Line heights are tokens too** — `--lh-display` 1.05, `--lh-heading` 1.15, `--lh-lede` 1.26, `--lh-title` 1.3, `--lh-body` 1.55. Never set a line-height in px; it breaks the fluid sizes.
+
+**Heading gaps.** Section title to first content is `var(--space-300)` (24px); page or hero title to content is `var(--space-250)` (20px).
+
 ## Components
 
 - **Hero** (`.events-hero`): a serif, accent-purple `.events-hero__title` ("Events") and a plain sans lede filling the section's full padded width. Previously had a `.eyebrow` ("Penn MEDIATED") above the title and a `max-width: 760px` cap on the lede, both matching `about`'s Mission Statement block / `team-leadership`'s hero — both removed 2026-08-29 as a sitewide decision (see "No eyebrow" below); the lede's cap went with it since the section comment already said it should fill the full width.

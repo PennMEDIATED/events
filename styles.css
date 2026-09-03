@@ -336,16 +336,28 @@ a[href="mailto:contact-us@infodem.upenn.edu"] {
 
 .seminar__pdf-img { width: 100%; height: auto; display: block; }
 
+/* Category 3 — document button. Opens a PDF, so it is a filled box rather
+   than a text link: on a coloured ground that is a white box with dark text.
+   Hover is movement, never a colour change. */
 .seminar__pdf-cta {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  padding: var(--space-100) var(--space-200);
+  background: var(--c-white);
+  color: var(--c-dark);
+  border-bottom: 0;
   font-family: var(--f-sans);
   font-size: var(--fs-small);
-  font-weight: 600;
-  color: var(--c-white);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-  padding-bottom: 2px;
-  transition: opacity 0.15s;
+  font-weight: 500;
+  line-height: var(--lh-body);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.seminar__pdf-cta:hover { opacity: 0.75; }
+
+.seminar__pdf-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(13, 13, 12, 0.22);
+}
 
 /* =============================================================================
    PAST EVENTS  (two-column: Democratic Repercussions panel / Seminar kickoff)

@@ -65,6 +65,108 @@ The top five are `clamp()` values that interpolate across the viewport, so table
 - **Seminar copy + featured schedule PDF** (`.seminar__copy` / `.seminar__pdf` / `.seminar__pdf-link` / `.seminar__pdf-cta`): `.seminar__inner` is the same two-column grid as `.past-events__grid` below it (`repeat(2, 1fr)`, `--space-600` gap, top-aligned), rather than a bespoke centered flex composition — the copy column is capped at `max-width: 560px` (matching `.event-card__desc`'s reading measure) *while it shares the row with `.seminar__pdf`*; that cap is lifted (`max-width: none`) once `.seminar__inner` stacks to one column under 900px, so the copy fills the full single-column width instead of leaving a block of empty space on the right (fixed 2026-08-31 — previously the cap carried through the stack unconditionally). The PDF card stays capped narrower still, at `max-width: 360px`, at every width — it's a document thumbnail, not reading copy, so it isn't meant to stretch — and left-aligns within its column rather than filling it edge-to-edge or centering under 900px (that centering used to visibly knock it out of alignment with the left-aligned copy above it once the section stacked to one column). The PDF card itself is a white tile floating on the gradient, unconstrained by the 4:3 aspect ratio `about`'s school-block/center-block/partner-card tiles use since this is a full document page rather than a logo — showing a rendered preview of the actual schedule PDF, with a text CTA beneath it to download the file directly. No `.card-arrow` badge on the tile itself (removed 2026-08-31 — the badge read as redundant next to the explicit "Download the Full Schedule (PDF)" CTA directly below it); `.card-arrow` is still used elsewhere on the page (`.event-card__media`). Replaced an earlier hand-transcribed 8-row schedule list and a logistics callout box, both removed once the real PDF was available to feature instead.
 - **Past events** (`.past-events` / `.event-card`): a two-column grid (stacks to one column under 900px) of `.event-card`s. `.past-events__grid` uses `align-items: stretch` (changed from `start` on 2026-08-31) so both cards in a row match the height of the taller one, rather than each hugging its own content and leaving the boxes visibly different lengths — unlike `.seminar__inner` above it, which stays `start`-aligned since its two children (a paragraph and a document thumbnail) aren't meant to look like matching cards. Each `.event-card` is now a bordered white box (`padding: var(--space-800)`, a hairline `rgba(13,13,12,0.08)` border, and a soft `0 20px 60px rgba(13,13,12,0.08)` shadow) — the same "card floating on the page" treatment as `home`'s `.about-center__card` (padding drops to `var(--space-400)` under 900px, matching that card's own mobile step). Inside: a small red date tag, title, and body copy, matching the type scale of `grant-card`/`news-card` elsewhere in the design system. `.event-card__desc` is capped at `max-width: 560px` (added 2026-08-29) so its lines don't run the full ~616px column width — a comfortable reading measure, matching `.seminar__copy`'s own cap — *while the grid is two columns*; under 900px, once `.past-events__grid` stacks to one column, the cap lifts (`max-width: none`, fixed 2026-08-31) so the copy fills the now much wider single column instead of leaving empty space on its right. The Media Fragmentation card uses `.event-card__media` (a 16:9 tile showing the real event photo, linked out to the `@PennMediated` YouTube channel — same "image tile + card-arrow badge + hover lift" language as `about`'s school-block/center-block/partner-card tiles), capped at the same `max-width: 560px` as `.event-card__desc` above 900px; that cap also lifts under 900px now (fixed 2026-08-31 — it used to carry through the single-column stack specifically to stop the tile from ballooning to the full container width, but that traded a full-bleed image for a large empty gap on the right of the card, which read worse), followed by a `.event-card__links` row using the same "dark text, subtle underline, turns red only on hover" plain-text-link pattern as `home`'s `.about-center__link` — a long-arrow (`⟶`) after the text instead of the `.card-arrow` badge, and red/orange only appearing as a hover state rather than a permanent border (changed 2026-08-31; previously a bordered white-fill pill with an always-visible red outline). The kickoff card's two captioned photos (`.event-card__photo-grid`) stay a 2-up grid at every width (never collapsing to one column, even on narrow screens) and are capped at the same `max-width: 560px` as `.event-card__desc` above 900px, so the pair's right edge lines up with the body copy above it; that cap lifts together with `.event-card__desc`'s under 900px (fixed 2026-08-31) so the alignment holds at the new, wider single-column width too, instead of leaving the photo pair narrower than the paragraph above it. (Briefly changed to a single stacked column on 2026-08-29 over concern that side-by-side read too small at 560px; reverted 2026-08-31 — stacking dropped the second photo underneath the first on narrow screens and blew each one up disproportionately, unbalancing it against the single-image Media Fragmentation card next to it. At 560px each photo is ~272px, which reads fine paired with its caption.)
 - **External-link arrow badge** (`.card-arrow`): copied verbatim from `about/styles.css`, used on the `.event-card__media` image tile. `.seminar__pdf-link` used to carry one too but had it removed (2026-08-31, see above). `.event-card__links` does *not* use it either — that link uses a plain inline `⟶` character instead, matching `home`'s `.about-center__link`.
+## Images and video
+
+This applies to every image, GIF and video added to any Penn MEDIATED repo. It is written to be followed directly — by a person or by a Claude session — without further instruction.
+
+### The one rule that is never optional
+
+**Every `<img>` and `<video>` carries explicit `width` and `height` attributes, holding the file's real intrinsic pixel dimensions.**
+
+```html
+<img src="assets/example.webp" width="640" height="334" alt="…">
+```
+
+They do not set the display size — CSS does. They give the browser the aspect ratio *before* the file downloads, so it reserves a correctly shaped box instead of collapsing to nothing and shoving everything below it down the page as each file lands. That shift is measured by search engines (Cumulative Layout Shift) and is worse for a reader, who loses their place or clicks a link that just moved.
+
+Every repo has a global `img, video { max-width: 100%; height: auto; display: block; }` reset, so the CSS keeps winning and the attributes only ever contribute the ratio. **Never guess the numbers** — read them off the file.
+
+### Pick the format by what the file is
+
+| Content | Format | Never use |
+| --- | --- | --- |
+| Photo, screenshot, artwork | **WebP**, quality 88 | PNG or JPEG at full camera resolution |
+| Logo, wordmark, icon | **SVG** if you have it, else WebP | — |
+| Anything that moves | **MP4** (H.264) + a WebP poster | **GIF, ever** |
+
+GIF is the big one. It has no interframe compression, so a screen recording is roughly ten times the size it needs to be: `research-compendium.gif` was 11.3MB for 290 frames; the identical recording as H.264 is 1.2MB.
+
+### Size it to the box it displays in, not to what you were sent
+
+Find the CSS box the image renders into, then export at **2×** that width for retina. Anything beyond that is bytes the browser downloads and immediately throws away. (`gni-membership.png` was 7992px wide, rendering into a 319px box — a 470KB file doing a 33KB job.)
+
+In this repo:
+
+| Where | CSS box at 1440px | Export at |
+| --- | --- | --- |
+| Event card media (`.event-card__media-img`) | 486×273, cropped | ~972px wide |
+| Photo-pair tile (`.event-card__photo-frame img`) | 235×176, cropped | ~470px wide |
+| Seminar PDF preview (`.seminar__pdf-img`) | 344px wide | ~688px |
+
+If you are adding an image somewhere not listed, measure the box first (`getBoundingClientRect().width` in the browser, at a 1440px viewport) and double it.
+
+### Commands
+
+Stills — resize and convert in one pass:
+
+```python
+from PIL import Image
+TARGET = 640                      # 2x the CSS box
+im = Image.open('source.png')
+w, h = im.size
+if w > TARGET:
+    im = im.resize((TARGET, round(h * TARGET / w)), Image.LANCZOS)
+im.save('out.webp', quality=88, method=6)
+print(im.size)                    # <- these are the width/height attributes
+```
+
+Animation — MP4 plus a poster frame:
+
+```bash
+ffmpeg -i source.gif -movflags +faststart -pix_fmt yuv420p \
+       -vf "scale=1280:-2:flags=lanczos" -crf 24 out.mp4
+ffmpeg -i source.gif -frames:v 1 -vf "scale=1280:-2:flags=lanczos" poster.png
+python3 -c "from PIL import Image; Image.open('poster.png').convert('RGB').save('out-poster.webp', quality=80, method=6)"
+ffprobe -v error -show_entries stream=width,height -of default=nw=1 out.mp4
+```
+
+`-crf 24` is a good default; raise it toward 30 for a smaller file, lower it toward 20 for a sharper one. `-pix_fmt yuv420p` is required for Safari and iOS.
+
+### Markup for video
+
+```html
+<video src="assets/name.mp4" poster="assets/name-poster.webp" width="1280" height="622"
+       autoplay muted loop playsinline preload="metadata" aria-label="…"></video>
+```
+
+Each attribute earns its place: `muted` is what permits autoplay at all, `playsinline` stops iOS opening it fullscreen, `poster` means the slot is never empty while the video loads, and `aria-label` replaces `alt` (a `<video>` has no `alt`).
+
+CSS cannot stop autoplay, so **a page with video needs the reduced-motion script** at the end of `<body>`. If the page already has one, leave it alone; if you are adding the first video to a page, add it:
+
+```html
+<script>
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('video[autoplay]').forEach(function (v) {
+      v.autoplay = false; v.pause(); v.currentTime = 0; v.removeAttribute('loop');
+    });
+  }
+</script>
+```
+
+Also check the CSS: any rule that sizes or crops an image needs to name `video` too, or the video slot will not match the image slot it replaced (`.card__image img` becomes `.card__image img, .card__image video`).
+
+### Before you call it done
+
+- [ ] File is WebP, SVG or MP4 — no GIF, no full-resolution PNG or JPEG
+- [ ] Its width is about 2× the CSS box it renders into
+- [ ] `width`/`height` attributes match the file's real dimensions
+- [ ] Real `alt` text (or `aria-label` on a video) that describes the image; empty `alt=""` only if it is purely decorative
+- [ ] Lives in this repo's `assets/`, not hotlinked from another site
+- [ ] Page opened in a browser at 1440px and ~400px — nothing overflows, nothing jumps on load
+- [ ] Originals are not committed alongside the optimised file; git history is the backup
+
+Do not commit an unoptimised original "just in case" — the previous commit already holds it, and a duplicate in the working tree also ships to the server.
+
 ## Hyperlinks
 
 One taxonomy, five categories, shared by every page repo. Pick the category by what the link *is*, not by which repo you happen to be editing.

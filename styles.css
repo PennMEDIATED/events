@@ -501,6 +501,11 @@ a[href="mailto:contact-us@infodem.upenn.edu"] {
   font-weight: 300;
   line-height: var(--lh-body);
   color: var(--c-dark);
+  /* Measure cap, not a layout width. .past-events__grid is two columns,
+     so a card is about half the row — 560px lands the same ~70-character
+     line as blog's 720px cap does in its single full-width column. The
+     two numbers differ ON PURPOSE; matching them would make one of the
+     two pages read wrong. See README -> Typography -> Measure. */
   max-width: 560px;
 }
 

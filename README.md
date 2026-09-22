@@ -1,6 +1,6 @@
 # Penn MEDIATED — Events
 
-The events page for the [Center on Media, Technology and Democracy](https://infodem.upenn.edu) — the Fall 2026 seminar schedule and past public events. Static HTML/CSS, no build step.
+The events page for the [Center on Media, Technology and Democracy](https://mediated.upenn.edu) — the Fall 2026 seminar schedule and past public events. Static HTML/CSS, no build step.
 
 - `index.html` — page markup
 - `styles.css` — all styling (design tokens live at the top in `:root`)
@@ -12,7 +12,7 @@ This page does **not** end in the shared Newsletter + Supporters closing block t
 
 ## Updating content
 
-This page was built from the content on the live `infodem.upenn.edu/events/` page. Nothing is left as a placeholder: the two kickoff photos in the "Information and Democracy Research Seminar" card and the Media Fragmentation panel tile all use real assets (`assets/Amir-seminar-presentation.jpg`, `assets/engler-introduction.jpg`, `assets/Media-Fragmentation.jpg`).
+This page was built from the content on the live `mediated.upenn.edu/events/` page. Nothing is left as a placeholder: the two kickoff photos in the "Information and Democracy Research Seminar" card and the Media Fragmentation panel tile all use real assets (`assets/Amir-seminar-presentation.jpg`, `assets/engler-introduction.jpg`, `assets/Media-Fragmentation.jpg`).
 
 The "Democratic Repercussions of Media Fragmentation" card (`.event-card__media`) links out to the `@PennMediated` YouTube channel rather than embedding an inline player or a separate "watch" link — a deliberate choice, not a placeholder. If a direct link to that specific video's recording is ever wanted, update the `href` on `.event-card__media` to the video's own URL (and consider re-adding a link to `.event-card__links` alongside the Daily Pennsylvanian coverage).
 

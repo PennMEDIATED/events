@@ -639,3 +639,10 @@ a[href="mailto:contact-us@infodem.upenn.edu"] {
    — convert that margin to padding rather than removing this.
    ====================================================================== */
 body { display: flow-root; }
+
+/* ── Page end ──────────────────────────────────────────────────────────
+   Sitewide (Sept 2026): the last section sits flush on the global footer,
+   which opens with its own 132px white signal band. That band is the gap
+   before the footer on every page. The old 80px trailing space on top of it
+   left 200px+ of white at the end of some pages. */
+.past-events { padding-bottom: 0; }

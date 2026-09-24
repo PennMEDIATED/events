@@ -554,7 +554,9 @@ a[href="mailto:contact-us@infodem.upenn.edu"] {
    ~272px, which reads fine paired with its caption. */
 .event-card__photo-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  /* minmax(0, 1fr), not bare 1fr: Safari sizes a bare 1fr track to the photo's
+     natural width, which pushed the second photo past the card on phones. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-150);
   max-width: 560px;
 }

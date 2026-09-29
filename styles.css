@@ -333,6 +333,14 @@ a[href="mailto:contact-us@infodem.upenn.edu"] {
   gap: var(--space-300);
   width: 100%;
   max-width: 360px;
+  /* Flush with the right page margin (the same --pad-x the hero and Past
+     Events grid end on) instead of floating mid-column. */
+  justify-self: end;
+}
+
+/* Stacked: fill the single column so both edges sit on the page margins. */
+@media (max-width: 900px) {
+  .seminar__pdf { max-width: none; justify-self: stretch; }
 }
 
 .seminar__pdf-link {

@@ -146,7 +146,7 @@ a:focus-visible {
 
 /* Keep the contact email on one line rather than breaking mid-address
    (appears in .seminar__body and .event-card__desc) (2026-08-31). */
-a[href="mailto:contact-us@infodem.upenn.edu"] {
+a[href="mailto:contact-us@mediated.upenn.edu"] {
   white-space: nowrap;
 }
 .sr-only {

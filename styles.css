@@ -382,6 +382,61 @@ a[href="mailto:contact-us@mediated.upenn.edu"] {
   box-shadow: 0 12px 24px rgba(13, 13, 12, 0.22);
 }
 
+.seminar__pdf-link { cursor: zoom-in; }
+
+/* Flyer lightbox (built by the script at the bottom of index.html).
+   The overlay never scrolls itself: embedded, the WordPress page does the
+   scrolling, and an inner scroll area would swallow the visitor's wheel —
+   the same trap the blog's post overlay had. The script sets the frame's
+   top and --fit-h so the flyer lands inside the part of the page that is
+   on screen. */
+.flyer-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0 var(--space-250);
+  background: rgba(13, 13, 12, 0.72);
+  overflow: hidden;
+  animation: flyer-lightbox-in 0.15s ease-out;
+}
+.flyer-lightbox[hidden] { display: none; }
+.flyer-lightbox__frame { position: relative; margin: 5vh 0 0; }
+.flyer-lightbox__img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(900px, calc(100vw - 2 * var(--space-250)));
+  max-height: var(--fit-h, 90vh);
+  border-radius: 4px;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.4);
+  background: var(--c-white);
+}
+.flyer-lightbox__close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--c-white);
+  color: var(--c-dark);
+  font-family: var(--f-sans);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+.flyer-lightbox__close:hover { opacity: 0.85; }
+@keyframes flyer-lightbox-in { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .flyer-lightbox { animation: none; } }
+
 /* =============================================================================
    PAST EVENTS  (two-column: Democratic Repercussions panel / Seminar kickoff)
    ============================================================================= */

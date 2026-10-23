@@ -34,10 +34,12 @@
       </div>
 
       <!--
-        Featured schedule PDF — the real flyer, exported to
-        assets/fall-2026-seminar-schedule.pdf, with a rendered preview
-        image (assets/fall-2026-seminar-schedule-preview.jpg) standing in
-        for it visually. Replaces the earlier hand-built seminar-list
+        Featured schedule — the real flyer. The JPG
+        (assets/fall-2026-seminar-schedule-preview.jpg) is what shows, and
+        clicking it opens it full size in a lightbox (script at the bottom
+        of this file). The PDF (assets/fall-2026-seminar-schedule.pdf) is
+        only behind the download button. Without JavaScript the image
+        link still opens the JPG on its own. Replaces the earlier hand-built seminar-list
         markup: the PDF is now the single source of truth for the
         schedule's details (dates, speakers, affiliations, room, time,
         virtual-link policy), so update the PDF when the schedule changes
@@ -47,10 +49,10 @@
         900px.
       -->
       <div class="seminar__pdf">
-        <a class="seminar__pdf-link" href="assets/fall-2026-seminar-schedule.pdf" target="_blank" rel="noopener" aria-label="View the Fall 2026 Seminar Schedule (PDF, opens in a new tab)">
+        <a class="seminar__pdf-link" href="assets/fall-2026-seminar-schedule-preview.jpg" aria-haspopup="dialog" aria-label="Enlarge the Fall 2026 Seminar Schedule">
           <img src="assets/fall-2026-seminar-schedule-preview.jpg" width="1100" height="1423" alt="Fall 2026 Seminar Schedule flyer: seven sessions, Wednesdays 1:00–2:30 PM ET in Amy Gutmann Hall 414, listing each date, speaker, and affiliation." class="seminar__pdf-img">
         </a>
-        <a class="seminar__pdf-cta" href="assets/fall-2026-seminar-schedule.pdf" target="_blank" rel="noopener">Download the Full Schedule (PDF)</a>
+        <a class="seminar__pdf-cta" href="assets/fall-2026-seminar-schedule.pdf" download="Penn-MEDIATED-Fall-2026-Seminar-Schedule.pdf">Download the Full Schedule (PDF)</a>
       </div>
     </div>
   </section>
@@ -161,6 +163,87 @@
          that window; sendHeight's hysteresis makes a no-op re-post free. */
       setTimeout(sendHeight, 300);
       setTimeout(sendHeight, 1200);
+    })();
+  </script>
+  <script>
+    /* Seminar flyer lightbox. Clicking the flyer opens the JPG full size over
+       a dark backdrop; the backdrop, the close button and Esc dismiss it.
+
+       Embedded, this page is one tall iframe that never scrolls itself — the
+       WordPress page scrolls — so a position: fixed overlay covers the whole
+       document and "the middle of the screen" is unknown from in here. An
+       IntersectionObserver on <body> answers it: its intersectionRect is the
+       part of this document the visitor can actually see, measured against
+       the top-level window even across origins. The flyer is placed in that
+       band and capped to its height, clear of the sticky site header.
+       Opened directly (not embedded), it's an ordinary viewport lightbox. */
+    (function () {
+      var link = document.querySelector('.seminar__pdf-link');
+      if (!link) return;
+      var thumb = link.querySelector('img');
+      var EMBEDDED = window.self !== window.top;
+      var HEADER = 96, GAP = 24;   // room for the sticky site header; breathing space below
+      var box, frame, closeBtn, lastFocus;
+
+      function build() {
+        box = document.createElement('div');
+        box.className = 'flyer-lightbox';
+        box.hidden = true;
+        box.setAttribute('role', 'dialog');
+        box.setAttribute('aria-modal', 'true');
+        box.setAttribute('aria-label', 'Fall 2026 Seminar Schedule');
+        box.innerHTML = '<figure class="flyer-lightbox__frame">' +
+          '<button type="button" class="flyer-lightbox__close" aria-label="Close">&times;</button>' +
+          '<img class="flyer-lightbox__img"></figure>';
+        frame = box.firstChild;
+        closeBtn = frame.querySelector('.flyer-lightbox__close');
+        var big = frame.querySelector('img');
+        big.src = link.getAttribute('href');
+        big.alt = thumb.alt;
+        box.addEventListener('click', function (e) { if (e.target === box) close(); });
+        closeBtn.addEventListener('click', close);
+        document.body.appendChild(box);
+      }
+
+      function visibleBand(done) {
+        if (!EMBEDDED || !('IntersectionObserver' in window)) return done(null);
+        var io = new IntersectionObserver(function (entries) {
+          io.disconnect();
+          var r = entries[0].intersectionRect;
+          done(r.height > 0 ? { top: r.top, height: r.height } : null);
+        });
+        io.observe(document.body);
+      }
+
+      function open(e) {
+        e.preventDefault();
+        if (!box) build();
+        lastFocus = document.activeElement;
+        visibleBand(function (band) {
+          if (band) {
+            frame.style.marginTop = (band.top + HEADER) + 'px';
+            frame.style.setProperty('--fit-h', Math.max(320, band.height - HEADER - GAP) + 'px');
+          } else if (EMBEDDED) {
+            frame.style.marginTop = Math.round(thumb.getBoundingClientRect().top + window.pageYOffset) + 'px';
+            frame.style.setProperty('--fit-h', '85vh');
+          } else {
+            frame.style.marginTop = '';
+            frame.style.removeProperty('--fit-h');
+          }
+          box.hidden = false;
+          closeBtn.focus({ preventScroll: true });
+        });
+      }
+
+      function close() {
+        box.hidden = true;
+        if (lastFocus) lastFocus.focus({ preventScroll: true });
+      }
+
+      link.addEventListener('click', open);
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && box && !box.hidden) close();
+      });
     })();
   </script>
 </body>
